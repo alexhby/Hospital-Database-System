@@ -1,0 +1,849 @@
+
+#2 ########################################################################################
+
+DESCRIBE TABLE Departments;
+DESCRIBE TABLE Staff;
+DESCRIBE TABLE Nurses;
+DESCRIBE TABLE Doctors;
+DESCRIBE TABLE Orderlies;
+DESCRIBE TABLE Administrative;
+DESCRIBE TABLE Custodial;
+DESCRIBE TABLE Stays;
+DESCRIBE TABLE Patient;
+DESCRIBE TABLE Beds;
+DESCRIBE TABLE Medication;
+DESCRIBE TABLE Administered;
+DESCRIBE TABLE Cared_for;
+DESCRIBE TABLE Vitals;
+DESCRIBE TABLE Watched_over;
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+DID                            SYSIBM    CHARACTER                 5     0 No    
+DNAME                          SYSIBM    VARCHAR                  20     0 No    
+NUMBER_OF_EMPLOYEES            SYSIBM    INTEGER                   4     0 No    
+WING                           SYSIBM    INTEGER                   4     0 Yes   
+CHIEF_DOCTOR                   SYSIBM    CHARACTER                10     0 Yes   
+HEAD_NURSE                     SYSIBM    CHARACTER                10     0 Yes   
+
+  6 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+SNAME                          SYSIBM    VARCHAR                  20     0 No    
+SLAST                          SYSIBM    VARCHAR                  20     0 Yes   
+MEDICARE_NUMBER                SYSIBM    CHARACTER                10     0 No    
+DATE_OF_BIRTH                  SYSIBM    DATE                      4     0 Yes   
+GENDER                         SYSIBM    CHARACTER                 1     0 Yes   
+CIVICNUMBER                    SYSIBM    VARCHAR                  10     0 Yes   
+CITY                           SYSIBM    VARCHAR                  30     0 Yes   
+POSTALCODE                     SYSIBM    VARCHAR                  10     0 Yes   
+COUNTRY                        SYSIBM    VARCHAR                  30     0 Yes   
+PHONE_NUMBER                   SYSIBM    CHARACTER                10     0 Yes   
+DATE_OF_EMPLOYEMENT            SYSIBM    DATE                      4     0 Yes   
+BIWEEKLY_HOURS                 SYSIBM    INTEGER                   4     0 Yes   
+
+  13 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+PRESCRIPTION_AUTHORISATION     SYSIBM    CHARACTER                 1     0 No    
+HOURLY_SALARY                  SYSIBM    DECIMAL                  16     2 Yes   
+IN_DEPARTMENT                  SYSIBM    CHARACTER                 5     0 No    
+SINCE                          SYSIBM    DATE                      4     0 Yes   
+
+  5 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+LEVEL                          SYSIBM    VARCHAR                  20     0 No    
+NUMBER_OF_PATIENT_VISITS       SYSIBM    INTEGER                   4     0 Yes   
+MORTALITY_RATE                 SYSIBM    DECIMAL                   5     4 Yes   
+ANNUAL_SALARY                  SYSIBM    DECIMAL                  16     2 Yes   
+AREA_OF_RESEARCH               SYSIBM    VARCHAR                  80     0 Yes   
+IN_DEPARTMENT                  SYSIBM    CHARACTER                 5     0 No    
+SINCE                          SYSIBM    DATE                      4     0 Yes   
+
+  8 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+TASK                           SYSIBM    VARCHAR                  50     0 No    
+HOURLY_SALARY                  SYSIBM    DECIMAL                  16     2 Yes   
+IN_DEPARTMENT                  SYSIBM    CHARACTER                 5     0 No    
+
+  4 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+RESPONSIBILITY                 SYSIBM    VARCHAR                  20     0 No    
+POSITION                       SYSIBM    VARCHAR                  20     0 Yes   
+ANNUAL_SALARY                  SYSIBM    DECIMAL                  16     2 Yes   
+IN_DEPARTMENT                  SYSIBM    CHARACTER                 5     0 No    
+
+  5 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+FLOOR_ASSIGNMENT               SYSIBM    INTEGER                   4     0 No    
+HOURLY_SALARY                  SYSIBM    DECIMAL                  16     2 Yes   
+IN_DEPARTMENT                  SYSIBM    CHARACTER                 5     0 No    
+
+  4 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+SID                            SYSIBM    CHARACTER                10     0 No    
+IN_DATE                        SYSIBM    DATE                      4     0 No    
+OUT_DATE                       SYSIBM    DATE                      4     0 Yes   
+SYMPTOMS                       SYSIBM    VARCHAR                  50     0 Yes   
+DIAGNOSIS                      SYSIBM    VARCHAR                  50     0 Yes   
+PID                            SYSIBM    CHARACTER                10     0 No    
+
+  6 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+PID                            SYSIBM    CHARACTER                10     0 No    
+MEDICARE_NUMBER                SYSIBM    CHARACTER                10     0 No    
+PNAME                          SYSIBM    VARCHAR                  20     0 No    
+PLAST                          SYSIBM    VARCHAR                  20     0 Yes   
+CIVICNUMBER                    SYSIBM    VARCHAR                  10     0 Yes   
+CITY                           SYSIBM    VARCHAR                  30     0 Yes   
+POSTALCODE                     SYSIBM    VARCHAR                  10     0 Yes   
+COUNTRY                        SYSIBM    VARCHAR                  30     0 Yes   
+AGE                            SYSIBM    INTEGER                   4     0 Yes   
+GENDER                         SYSIBM    CHARACTER                 1     0 Yes   
+PHONE_NUMBER                   SYSIBM    CHARACTER                10     0 Yes   
+EMERGENCY_CONTACT              SYSIBM    CHARACTER                10     0 Yes   
+BLOOD_TYPE                     SYSIBM    VARCHAR                   3     0 Yes   
+
+  13 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+BEDID                          SYSIBM    CHARACTER                10     0 No    
+ROOM_NUMBER                    SYSIBM    INTEGER                   4     0 No    
+LAST_CLEANED                   SYSIBM    DATE                      4     0 Yes   
+SID                            SYSIBM    CHARACTER                10     0 Yes   
+EID                            SYSIBM    CHARACTER                10     0 No    
+
+  5 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+SCIENTIFIC_NAME                SYSIBM    VARCHAR                  30     0 No    
+COMPANY                        SYSIBM    VARCHAR                  20     0 Yes   
+COST_PER_GRAM                  SYSIBM    DECIMAL                  16     2 Yes   
+
+  3 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+SID                            SYSIBM    CHARACTER                10     0 No    
+MEDICATION                     SYSIBM    VARCHAR                  20     0 No    
+DOSE_G                         SYSIBM    REAL                      4     0 No    
+DURATION_DAYS                  SYSIBM    INTEGER                   4     0 No    
+FREQUENCY_PERDAY               SYSIBM    INTEGER                   4     0 No    
+
+  5 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+SID                            SYSIBM    CHARACTER                10     0 No    
+TYPE                           SYSIBM    VARCHAR                  20     0 Yes   
+
+  3 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+DATE_MEASURED                  SYSIBM    DATE                      4     0 No    
+TIME_MEASURED                  SYSIBM    TIME                      3     0 No    
+TYPE                           SYSIBM    VARCHAR                  20     0 No    
+VALUE                          SYSIBM    REAL                      4     0 Yes   
+SID                            SYSIBM    CHARACTER                10     0 No    
+EID                            SYSIBM    CHARACTER                10     0 No    
+
+  6 record(s) selected.
+
+
+
+Column                         Type      Type
+name                           schema    name               Length   Scale Nulls
+------------------------------ --------- ------------------ -------- ----- ------
+EID                            SYSIBM    CHARACTER                10     0 No    
+SID                            SYSIBM    CHARACTER                10     0 No    
+SHIFT_DATE                     SYSIBM    DATE                      4     0 No    
+
+  3 record(s) selected.
+
+#3 ######################################################################################################
+
+
+
+SELECT * FROM  Departments;
+SELECT * FROM  Staff;
+SELECT * FROM  Nurses;
+SELECT * FROM  Doctors;
+SELECT * FROM  Orderlies;
+SELECT * FROM  Administrative;
+SELECT * FROM  Custodial;
+SELECT * FROM  Stays;
+SELECT * FROM  Patient;
+SELECT * FROM  Beds;
+SELECT * FROM  Medication;
+SELECT * FROM  Administered;
+SELECT * FROM  Cared_for;
+SELECT * FROM  Vitals;
+SELECT * FROM  Watched_over;
+
+
+
+DID   DNAME                NUMBER_OF_EMPLOYEES WING        CHIEF_DOCTOR HEAD_NURSE
+----- -------------------- ------------------- ----------- ------------ ----------
+DEP01 Urology                               10           2 DOC2000001   NUR2000001
+DEP02 Cardiology                            10           1 DOC2000002   NUR2000002
+DEP03 Orthopaedic Surgery                   10           2 DOC2000003   NUR2000003
+DEP04 Neurosurgery                          10           2 DOC2000004   NUR2000004
+DEP05 Psychiatry                            10           4 DOC2000005   NUR2000005
+DEP06 Central ICU                           10           1 DOC1000001   NUR1000001
+DEP07 Gastroenterology                      10           1 DOC1000002   NUR1000002
+DEP08 Oncology                              10           3 DOC1000003   NUR1000003
+DEP09 Nephrology                            10           3 DOC1000004   NUR1000004
+DEP10 Radiotherapy                          10           3 DOC1000005   NUR1000005
+
+  10 record(s) selected.
+
+
+
+
+#4 #####################################################################################################
+
+
+
+EID        SNAME                SLAST                MEDICARE_NUMBER DATE_OF_BIRTH GENDER CIVICNUMBER CITY                           POSTALCODE COUNTRY                        PHONE_NUMBER DATE_OF_EMPLOYEMENT BIWEEKLY_HOURS
+---------- -------------------- -------------------- --------------- ------------- ------ ----------- ------------------------------ ---------- ------------------------------ ------------ ------------------- --------------
+DOC2000001 Imad                 Halabi               2222287075      02/11/1979    M      1610        Montreal                       E7O9X3     Canada                         5142474688   02/01/2012                      84
+DOC2000002 Jabir                Assaf                2222297145      02/19/1978    M      1594        Laval                          T3M2E6     Canada                         5142494932   01/01/2014                      75
+DOC2000003 Ibrahim              Atalla               2222203491      06/25/1962    M      1967        Montreal                       S0F1F9     Canada                         5142465313   11/01/2010                      76
+DOC2000004 Rima                 Bahar                2222258500      03/06/1960    F      1993        Brossard                       E0U3U7     Canada                         5142477081   10/01/1990                      79
+DOC2000005 Nawal                Tannous              2222284414      05/05/1977    F      770         Montreal                       J1U8B0     Canada                         5142463763   03/01/2013                      30
+NUR2000001 Gebran               Zoghby               2222284733      04/25/1957    M      195         Brossard                       E6L6F1     Canada                         5142464753   02/01/2010                      82
+NUR2000002 Karim                Kannaan              2222234726      07/26/1957    M      419         Montreal                       X1U3F4     Canada                         5142424868   06/01/2014                      95
+NUR2000003 Nada                 Bishara              2222214255      02/07/1961    F      1171        Montreal                       Y9Q7E4     Canada                         5142428656   02/01/1998                      45
+NUR2000004 Hanan                Toma                 2222277081      04/06/1963    F      1574        Montreal                       V7P6W3     Canada                         5142414780   05/01/2005                      76
+NUR2000005 Shophia              Asad                 2222262044      05/24/1974    F      135         Laval                          X7C6L5     Canada                         5142493385   03/01/2000                      38
+ORD2000001 Rafiq                Deeb                 2222273969      05/31/1960    M      189         Laval                          R8L1P6     Canada                         5142446755   01/01/2000                      22
+ORD2000002 Shakir               Khoury               2222261645      06/26/1979    M      960         Laval                          N2R2S3     Canada                         5142424688   01/01/2013                      45
+ORD2000003 Fouad                kassis               2222297573      12/03/1957    M      119         Brossard                       V8U9N1     Canada                         5142481418   01/01/2008                      95
+ORD2000004 Anas                 Naser                2222211456      10/10/1966    M      620         Montreal                       H4J4K5     Canada                         5142428592   01/01/2012                      34
+ORD2000005 Bernadette           Sayeh                2222230676      06/23/1972    F      443         Laval                          Y0D9F3     Canada                         5142484679   01/01/2003                      10
+DOC1000001 Marcos               King                 1111174265      01/20/1965    M      2801        Montreal                       H1B2C3     Canada                         5145756130   02/25/1995                      83
+DOC1000002 Tyrone               Lawson               1111116206      03/20/1966    M      779         Laval                          H7C4D5     Canada                         5141913842   12/12/1995                      76
+DOC1000003 Caleb                Shaw                 1111136119      08/18/1967    M      2220        Montreal                       H1E6F7     Canada                         5143026337   10/07/2005                      75
+DOC1000004 Joanna               Pratt                1111178381      11/13/1979    F      2595        Brossard                       H5A8G9     Canada                         5147253891   06/14/2009                      80
+DOC1000005 Carol                Rose                 1111174584      05/16/1984    F      2156        Montreal                       H1H1I2     Canada                         5148828942   08/24/2012                      31
+DOC1000006 Geneva               Munoz                1111123456      12/13/1985    F      111         Brossard                       H3A2C3     Canada                         5147253891   07/14/2008                      79
+DOC1000007 Elaine               Murray               1111134567      05/10/1986    F      22          Montreal                       H1H4I5     Canada                         5148828942   08/24/2007                      33
+DOC1000008 Candace              Flowers              1111145678      01/15/1985    F      4           Brossard                       H3A8T7     Canada                         5147253891   07/14/2009                      85
+DOC1000009 Carrie               Simon                1111156789      06/16/1986    F      15          Montreal                       H1R1W5     Canada                         5148828942   08/24/2013                      32
+NUR1000001 Roman                Francis              1111154483      08/16/1903    M      1951        Brossard                       H5J6K7     Canada                         5148506237   01/01/2000                      81
+NUR1000002 Rolando              Love                 1111137463      03/17/1974    M      2595        Montreal                       H1L9M1     Canada                         5141902977   10/14/2001                      96
+NUR1000003 Candice              Mendoza              1111113435      04/29/1976    F      2990        Montreal                       H1N2O3     Canada                         5147564920   12/17/2005                      44
+NUR1000004 Pauline              Cruz                 1111185127      08/08/1939    F      264         Montreal                       H1P4S5     Canada                         5144319935   09/15/2006                      77
+NUR1000005 Katie                Munoz                1111126389      10/08/1982    F      2748        Laval                          H7T8U9     Canada                         5144955438   10/29/2006                      37
+ADM3000001 Katie                Munoz                3333326319      10/08/1982    F      2748        Laval                          H7T8U9     Canada                         5144955438   10/29/2006                      37
+CUS3000001 Katie                Munoz                3333326329      10/08/1982    F      2748        Laval                          H7T8U9     Canada                         5144955438   10/29/2006                      37
+
+  31 record(s) selected.
+
+
+
+EID        PRESCRIPTION_AUTHORISATION HOURLY_SALARY      IN_DEPARTMENT SINCE     
+---------- -------------------------- ------------------ ------------- ----------
+NUR2000001 y                                       13.50 DEP01         02/08/2010
+NUR2000002 n                                       10.50 DEP02         06/02/2014
+NUR2000003 y                                       15.50 DEP03         02/23/1998
+NUR2000004 y                                       13.00 DEP04         05/01/2005
+NUR2000005 y                                       13.50 DEP05         03/17/2000
+NUR1000001 y                                       13.50 DEP06         01/01/2000
+NUR1000002 n                                       10.50 DEP07         10/14/2001
+NUR1000003 y                                       15.50 DEP08         12/17/2005
+NUR1000004 y                                       13.00 DEP09         09/15/2006
+NUR1000005 y                                       13.50 DEP10         10/29/2006
+
+  10 record(s) selected.
+
+
+
+EID        LEVEL                NUMBER_OF_PATIENT_VISITS MORTALITY_RATE ANNUAL_SALARY      AREA_OF_RESEARCH                                                                 IN_DEPARTMENT SINCE     
+---------- -------------------- ------------------------ -------------- ------------------ -------------------------------------------------------------------------------- ------------- ----------
+DOC2000001 R3                                        233         0.1458           65000.00 Urology                                                                          DEP01         02/08/2012
+DOC2000002 Medical student                             2         0.0000                  - cariovasular diseases                                                            DEP02         01/05/2014
+DOC2000003 R5                                        824         0.4200          145545.58 artificial hips                                                                  DEP03         11/25/2010
+DOC2000004 Permanent                                2702         0.2300          475000.30 neurological implants                                                            DEP04         10/02/1990
+DOC2000005 R1                                        120         0.0300           32000.45 Therapy success in psychologique diseases                                        DEP05         03/20/2013
+DOC1000001 Permanent                                2200         0.2458          475000.30 Critical Care                                                                    DEP06         02/25/1995
+DOC1000002 Permanent                                2410         0.2600          485000.30 Gastroenterology                                                                 DEP07         12/12/1995
+DOC1000003 Permanent                                2300         0.3200          464900.30 Oncology                                                                         DEP08         10/07/2005
+DOC1000004 Permanent                                2350         0.2300          455000.30 Nephrology                                                                       DEP09         06/14/2009
+DOC1000005 Permanent                                2100         0.2700          460000.30 Radiotherapy                                                                     DEP10         08/24/2012
+DOC1000006 Permanent                                2410         0.2500          485000.30 Gastroenterology                                                                 DEP07         07/14/2008
+DOC1000007 Permanent                                2300         0.2800          465000.30 Oncology                                                                         DEP08         08/24/2007
+DOC1000008 Permanent                                2350         0.2500          455000.30 Nephrology                                                                       DEP09         07/14/2009
+DOC1000009 Permanent                                2100         0.2400          460000.30 Radiotherapy                                                                     DEP10         08/24/2013
+
+  14 record(s) selected.
+
+
+
+EID        TASK                                               HOURLY_SALARY      IN_DEPARTMENT
+---------- -------------------------------------------------- ------------------ -------------
+ORD2000001 Post-surgery transport                                          12.00 DEP01        
+ORD2000002 morgue transport                                                11.00 DEP02        
+ORD2000003 bed cleaning                                                    13.50 DEP03        
+ORD2000004 bed cleaning                                                    10.00 DEP04        
+ORD2000005 emergency transport                                             11.50 DEP05        
+
+  5 record(s) selected.
+
+
+
+EID        RESPONSIBILITY       POSITION             ANNUAL_SALARY      IN_DEPARTMENT
+---------- -------------------- -------------------- ------------------ -------------
+ADM3000001 Management           -                                     - DEP01        
+
+  1 record(s) selected.
+
+
+
+EID        FLOOR_ASSIGNMENT HOURLY_SALARY      IN_DEPARTMENT
+---------- ---------------- ------------------ -------------
+CUS3000001                1                  - DEP01        
+
+  1 record(s) selected.
+
+
+
+SID        IN_DATE    OUT_DATE   SYMPTOMS                                           DIAGNOSIS                                          PID       
+---------- ---------- ---------- -------------------------------------------------- -------------------------------------------------- ----------
+STAY200001 02/23/2015 -          trouble breathing, left arm pain                   cardio stenosis                                    PT20000001
+STAY200002 05/12/2010 07/11/2010 low immune system, fatigue                         HIV, Insomnia                                      PT20000004
+STAY200003 02/14/2013 02/18/2013 lower abdominal pain , inflammation                appendicitis                                       PT20000003
+STAY200004 05/21/2012 10/22/2012 fatigue, fever, rash                               HIV, flu                                           PT20000004
+STAY200005 01/12/2015 03/01/2015 extreme pain left lower leg                        broken tibia                                       PT20000002
+STAY200006 01/01/2010 03/08/2010 weak immune system, fatigue                        HIV                                                PT20000002
+STAY300001 06/21/2013 07/04/2013 heart palpitations , anxiety , headache            ptsd                                               PT30000002
+STAY300002 09/02/2014 09/20/2014 paranoia, hair loss, anger                         malnutrition                                       PT30000002
+STAY300003 03/01/2015 -          fatigue , nausea , headache                        pregnancy complications                            PT30000002
+STAY300004 02/01/2014 03/09/2015 psychotic episodes, emotional distress             bipolar disorder                                   PT30000001
+STAY300005 02/23/2010 02/25/2010 trouble breathing, left arm pain                   cardio stenosis                                    PT10000001
+STAY300006 02/23/2011 02/25/2011 trouble breathing, left arm pain                   cardio stenosis                                    PT10000002
+STAY300007 02/23/2012 02/25/2012 trouble breathing, left arm pain                   cardio stenosis                                    PT10000003
+STAY300008 02/23/2013 02/25/2013 trouble breathing, left arm pain                   cardio stenosis                                    PT10000004
+STAY300009 02/23/2014 02/25/2014 trouble breathing, left arm pain                   cardio stenosis                                    PT10000005
+STAY300010 02/23/2010 02/25/2010 trouble breathing, left arm pain                   cardio stenosis                                    PT20000001
+STAY300011 02/23/2011 02/25/2011 trouble breathing, left arm pain                   cardio stenosis                                    PT20000001
+STAY300012 02/23/2012 02/25/2012 trouble breathing, left arm pain                   cardio stenosis                                    PT20000001
+STAY300013 02/23/2013 02/25/2013 trouble breathing, left arm pain                   cardio stenosis                                    PT20000001
+STAY300014 02/23/2014 02/25/2014 trouble breathing, left arm pain                   cardio stenosis                                    PT20000001
+
+  20 record(s) selected.
+
+
+
+PID        MEDICARE_NUMBER PNAME                PLAST                CIVICNUMBER CITY                           POSTALCODE COUNTRY                        AGE         GENDER PHONE_NUMBER EMERGENCY_CONTACT BLOOD_TYPE
+---------- --------------- -------------------- -------------------- ----------- ------------------------------ ---------- ------------------------------ ----------- ------ ------------ ----------------- ----------
+PT10000001 1111105647      Roberto              Klein                123         laval                          H7A1A1     canada                                  78 M      5142214567   5142597535        O+        
+PT10000004 1111112345      Marsha               Strickland           102         laval                          H1C1F4     canada                                  39 F      5142305432   5142697825        O-        
+PT10000005 1111123456      Brittany             Adkins               101         laval                          H7A1D3     canada                                  78 M      5142217835   5142596354        O+        
+PT10000003 1111134567      Al                   Collier              789         laval                          H7A1A3     canada                                  78 M      5142215435   5142595302        O+        
+PT10000002 1111145632      Marta                Nelson               456         laval                          H7A1A2     canada                                  39 F      5142308767   5142691237        O-        
+PT20000003 2222204637      Fatima               Baroud               1123        montreal                       H2B2B2     canada                                  18 F      5142874014   5142731202        A-        
+PT20000004 2222205647      Tanious              Bin-Mahmood          4453        laval                          H7A1A1     canada                                  78 M      5142212927   5142598509        O+        
+PT20000001 2222208092      Mohammed             Abou-Saba            2119        sherbrooke                     H1A1A1     canada                                  32 M      5142399127   5142117880        AB+       
+PT20000002 2222212345      Mahmoud              El-Hareb             22          beyrout                        11112222   lebanon                                 25 M      5142152432   5142323467        B+        
+PT20000005 2222245632      Khadija              Lafleur              665         montreal                       H1C1C1     canada                                  39 F      5142303302   5142697140        O-        
+PT30000002 3333300202      Janice               Franco               3245        brossard                       H1A1A6     canada                                  36 F      5143332242   5143024123        A+        
+PT30000001 3333301010      Alex                 Simons               3132        montreal                       H1A1A9     canada                                  44 M      5143321543   5143121123        AB-       
+
+  12 record(s) selected.
+
+
+
+BEDID      ROOM_NUMBER LAST_CLEANED SID        EID       
+---------- ----------- ------------ ---------- ----------
+BED2000001         840 03/01/2015   STAY200001 ORD2000003
+BED2000002         712 03/01/2015   -          ORD2000003
+BED2000003          12 03/01/2015   -          ORD2000004
+BED2000004         122 03/01/2015   -          ORD2000003
+BED2000005         500 03/01/2015   -          ORD2000004
+BED2000006         713 03/01/2015   -          ORD2000003
+BED2000007          13 03/01/2015   -          ORD2000004
+BED2000008         123 03/01/2015   STAY300003 ORD2000003
+BED2000009         501 03/01/2015   STAY300004 ORD2000004
+
+  9 record(s) selected.
+
+
+
+SCIENTIFIC_NAME                COMPANY              COST_PER_GRAM     
+------------------------------ -------------------- ------------------
+infliximab                     Janssen Biotech                 1250.00
+celecoxib                      Pfizer                            38.04
+sildenafil                     Pfizer                           349.88
+benztropine                    Pliva                            102.55
+prasugrel                      Daiichi Sankyo                    21.33
+
+  5 record(s) selected.
+
+
+
+SID        MEDICATION           DOSE_G                   DURATION_DAYS FREQUENCY_PERDAY
+---------- -------------------- ------------------------ ------------- ----------------
+STAY200005 infliximab                      +1.00000E-003            35                1
+STAY200001 benztropine                     +5.00000E-001             5                2
+STAY200004 sildenafil                      +2.50000E-001             5                3
+STAY200004 infliximab                      +2.00000E-003           105                1
+STAY200003 celecoxib                       +5.50000E-001            10                5
+STAY300007 sildenafil                      +2.50000E-001             5                3
+STAY300008 infliximab                      +2.00000E-003           105                1
+STAY300009 celecoxib                       +5.50000E-001            10                5
+
+  8 record(s) selected.
+
+
+
+EID        SID        TYPE                
+---------- ---------- --------------------
+DOC2000004 STAY200003 primary             
+DOC2000002 STAY200003 secondary           
+DOC2000002 STAY200004 secondary           
+DOC2000001 STAY200001 secondary           
+DOC2000003 STAY200005 primary             
+DOC1000001 STAY200002 primary             
+DOC1000002 STAY300001 primary             
+DOC1000003 STAY200003 secondary           
+DOC1000004 STAY300003 primary             
+DOC1000004 STAY300004 primary             
+
+  10 record(s) selected.
+
+
+
+DATE_MEASURED TIME_MEASURED TYPE                 VALUE                    SID        EID       
+------------- ------------- -------------------- ------------------------ ---------- ----------
+02/23/2015    09:00:00      Heart rate                      +9.00000E+001 STAY200001 NUR2000003
+02/14/2013    11:00:00      Body temperature                +3.84000E+001 STAY200003 NUR2000003
+
+  2 record(s) selected.
+
+
+
+EID        SID        SHIFT_DATE
+---------- ---------- ----------
+NUR2000003 STAY200001 03/01/2015
+NUR2000003 STAY200003 02/15/2013
+NUR2000002 STAY200005 02/04/2015
+NUR2000004 STAY200004 07/05/2012
+NUR2000003 STAY200004 05/30/2012
+NUR1000001 STAY300001 01/01/2015
+NUR1000002 STAY300002 01/01/2015
+NUR1000003 STAY300003 01/01/2015
+NUR1000004 STAY300004 01/01/2015
+NUR1000004 STAY200003 02/16/2013
+NUR2000001 STAY200003 02/17/2013
+NUR1000001 STAY200003 02/18/2013
+
+  12 record(s) selected.
+
+
+#5 ###########################################################################################################
+
+CREATE TABLE Departments 
+(dID CHAR(5) NOT NULL PRIMARY KEY, 
+dName VARCHAR(20) NOT NULL, 
+number_of_employees INT NOT NULL, 
+wing INT, chief_doctor CHAR(10), 
+head_nurse CHAR(10));
+
+CREATE TABLE Staff 
+(eID CHAR(10) NOT NULL PRIMARY KEY, 
+sName VARCHAR(20) NOT NULL, 
+sLast VARCHAR(20), 
+medicare_number CHAR(10) NOT NULL UNIQUE, 
+date_of_birth DATE, 
+gender CHAR(1), 
+civicNumber VARCHAR(10), 
+city VARCHAR(30), 
+postalCode VARCHAR(10), 
+country VARCHAR(30), 
+phone_number CHAR(10), 
+date_of_employement DATE, 
+biweekly_hours INT);
+
+CREATE TABLE Nurses 
+(eID CHAR(10) NOT NULL PRIMARY KEY, 
+prescription_authorisation CHAR(1) NOT NULL, 
+hourly_salary DECIMAL(16,2), 
+in_department CHAR(5) NOT NULL, 
+since DATE);
+CREATE TABLE Doctors 
+(eID CHAR(10) NOT NULL PRIMARY KEY, 
+level VARCHAR(20) NOT NULL,
+number_of_patient_visits INT, 
+mortality_rate DECIMAL(5, 4), 
+annual_salary DECIMAL(16,2), 
+area_of_research VARCHAR(80), 
+in_department CHAR(5) NOT NULL, 
+since DATE);
+
+CREATE TABLE Orderlies 
+(eID CHAR(10) NOT NULL PRIMARY KEY, 
+task VARCHAR(50) NOT NULL, 
+hourly_salary DECIMAL(16,2), 
+in_department CHAR(5) NOT NULL);
+
+CREATE TABLE Administrative 
+(eID CHAR(10) NOT NULL PRIMARY KEY, 
+responsibility VARCHAR(20) NOT NULL, 
+position VARCHAR(20), 
+annual_salary DECIMAL(16,2), 
+in_department CHAR(5) NOT NULL);
+
+CREATE TABLE Custodial 
+(eID CHAR(10) NOT NULL PRIMARY KEY, 
+floor_assignment INT NOT NULL, 
+hourly_salary DECIMAL(16,2), 
+in_department CHAR(5) NOT NULL);
+
+CREATE TABLE Stays 
+(sID CHAR(10) NOT NULL PRIMARY KEY,
+in_date DATE NOT NULL, 
+out_date DATE, 
+symptoms VARCHAR(50), 
+diagnosis VARCHAR(50), 
+pID CHAR(10) NOT NULL);
+
+CREATE TABLE Patient 
+(pID CHAR(10) NOT NULL PRIMARY KEY, 
+medicare_number CHAR(10) NOT NULL UNIQUE, 
+pName VARCHAR(20) NOT NULL, 
+pLast VARCHAR(20), 
+civicNumber VARCHAR(10), 
+city VARCHAR(30), 
+postalCode VARCHAR(10), 
+country VARCHAR(30), 
+age INT, 
+gender CHAR(1), 
+phone_number CHAR(10), 
+emergency_contact CHAR(10), 
+blood_type VARCHAR(3));
+
+CREATE TABLE Beds 
+(bedID CHAR(10) NOT NULL PRIMARY KEY, 
+room_number INT NOT NULL, 
+last_cleaned DATE, 
+sID CHAR(10), 
+eID CHAR(10) NOT NULL) ;
+
+CREATE TABLE Medication 
+(scientific_name VARCHAR(30) NOT NULL PRIMARY KEY, 
+company VARCHAR(20), 
+cost_per_gram DECIMAL(16,2));
+
+CREATE TABLE Vitals 
+(date_measured DATE NOT NULL, 
+time_measured TIME NOT NULL, 
+type VARCHAR(20) NOT NULL, 
+value REAL, 
+sID CHAR(10) NOT NULL, 
+eID CHAR(10) NOT NULL, 
+PRIMARY KEY (sID, eID, date_measured, time_measured, type));
+
+CREATE TABLE Administered 
+(sID CHAR(10) NOT NULL, 
+medication VARCHAR(20) NOT NULL,
+dose_g REAL NOT NULL, 
+duration_days INT NOT NULL, 
+frequency_perday INT NOT NULL, 
+PRIMARY KEY (sID,medication));
+
+CREATE TABLE Watched_over 
+(eID CHAR(10) NOT NULL, 
+sID CHAR(10) NOT NULL, 
+shift_date DATE NOT NULL, 
+PRIMARY KEY (sID,eid));
+
+CREATE TABLE Cared_for 
+(eID CHAR(10) NOT NULL,
+sID CHAR(10) NOT NULL , 
+type VARCHAR(20), 
+PRIMARY KEY (sID,eID));
+
+
+
+
+# QUERIES
+
+
+--1 : compute total medication cost per patient since 2015-01-01, assume charges are computed at exit from hospital for discharged patients.
+
+SELECT pName, pLast, patient.pID, SUM(dose_g * duration_days * frequency_perday) AS Total_due FROM table (SELECT Stays.sID, pID, dose_g, duration_days, frequency_perday FROM Stays, Administered WHERE stays.sID = Administered.sID AND (out_date > '2011-01-01' OR out_date IS NULL)) as PT_2015 , patient WHERE PT_2015.pID = patient.pID GROUP BY pName, pLast, patient.pID;
+
+PNAME                PLAST                PID        TOTAL_DUE               
+-------------------- -------------------- ---------- ------------------------
+Mohammed             Abou-Saba            PT20000001   +5.00000000000000E+000
+Mahmoud              El-Hareb             PT20000002   +3.50000016624108E-002
+Fatima               Baroud               PT20000003   +2.75000005960464E+001
+Tanious              Bin-Mahmood          PT20000004   +3.96000000997446E+000
+Al                   Collier              PT10000003   +3.75000000000000E+000
+Marsha               Strickland           PT10000004   +2.10000009974465E-001
+Brittany             Adkins               PT10000005   +2.75000005960464E+001
+
+  7 record(s) selected.
+
+
+
+-- 2: For research purposes (origin effects on HIV symptoms), give the average stay duration of all stays where the patient is diagnosed for with HIV and the Patient lives in Canada; do the same for patients from Lebanon
+
+SELECT country , avg(days (out_date) - days (in_date)) AS average_duration FROM patient,Stays WHERE Stays.diagnosis LIKE '%HIV%' AND Stays.pID = patient.pID AND (UCASE(patient.country) = 'LEBANON' OR UCASE(patient.country) = 'CANADA') GROUP BY country;
+
+COUNTRY                        AVERAGE_DURATION
+------------------------------ ----------------
+canada                                      107
+lebanon                                      66
+
+  2 record(s) selected.
+
+
+
+
+-- 3: Due to a big accident, and lack of time, the hospital needs the phone number of all FORMER patients (not currently hospitalized) with blood type O- or O+ Thal live in laval
+
+SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_';
+
+PNAME                PLAST                PHONE_NUMBER
+-------------------- -------------------- ------------
+Tanious              Bin-Mahmood          5142212927  
+Roberto              Klein                5142214567  
+Marta                Nelson               5142308767  
+Al                   Collier              5142215435  
+Marsha               Strickland           5142305432  
+Brittany             Adkins               5142217835  
+
+  6 record(s) selected.
+
+
+
+
+--4: the hospital has realized that a certain patient in the hospital has a dangerous transmissible disease, The disease is particularly dangerous for people over 50 years old !! List all staff members who have been in contact with the patient and are over 50 and there phone number. we are given the Stay associtaed with the infectious patient as target_sid (suppose it is 'STAY200003')
+ 
+
+SELECT eID, sName, sLast, phone_number, date_of_birth 
+FROM staff 
+WHERE staff.eid IN (SELECT eID FROM Cared_for WHERE Cared_for.sid = 'STAY200003' 
+UNION 
+SELECT eID 
+FROM Watched_over 
+WHERE Watched_over.sid = 'STAY200003' 
+UNION 
+SELECT eID 
+FROM Beds 
+WHERE Beds.sid = 'STAY200003') AND date_of_birth < (current date - 50 YEARS);
+
+
+
+EID        SNAME                SLAST                PHONE_NUMBER DATE_OF_BIRTH
+---------- -------------------- -------------------- ------------ -------------
+NUR1000001 Roman                Francis              5148506237   08/16/1903   
+NUR1000004 Pauline              Cruz                 5144319935   08/08/1939   
+NUR2000001 Gebran               Zoghby               5142464753   04/25/1957   
+DOC2000004 Rima                 Bahar                5142477081   03/06/1960   
+NUR2000003 Nada                 Bishara              5142428656   02/07/1961   
+
+  5 record(s) selected.
+
+
+
+
+
+--5: Calculate and list doctor's first name, last name, age and area_of_research for all female doctors who are less than 40 years old.
+
+SELECT S.sName, S.sLast, (YEAR (current date) - YEAR (date_of_birth)) AS age, D.area_of_research FROM Staff S, Doctors D WHERE S.eid = D.eid AND S.gender = 'F' AND (YEAR (current date) - YEAR (date_of_birth)) < 40;
+
+
+SNAME                SLAST                AGE         AREA_OF_RESEARCH                                                                
+-------------------- -------------------- ----------- --------------------------------------------------------------------------------
+Nawal                Tannous                       38 Therapy success in psychologique diseases                                       
+Joanna               Pratt                         36 Nephrology                                                                      
+Carol                Rose                          31 Radiotherapy                                                                    
+Geneva               Munoz                         30 Gastroenterology                                                                
+Elaine               Murray                        29 Oncology                                                                        
+Candace              Flowers                       30 Nephrology                                                                      
+Carrie               Simon                         29 Radiotherapy                                                                    
+
+  7 record(s) selected.
+
+#6 ###########################################################################################################
+
+
+
+-- 1 : There has been an outbreak, and all employees under 40 years of age must be quarantined. But first, we must create patient files for each of these employees, in order to later be able to admit them. 
+
+INSERT INTO Patient (pID, medicare_number, pName, pLast, gender, age, phone_number) SELECT eID, medicare_number, sName, sLast, gender, (YEAR(current date) - YEAR(date_of_birth)), phone_number FROM Staff WHERE (YEAR(current date) - YEAR(date_of_birth)) < 40 AND medicare_number NOT IN (SELECT p.medicare_number FROM patient p);
+
+
+-- 2 : We realize that the outbreak was a false alarm, and want to remove the temporary patient files created for the staff members in a hurry (having used their eid as a pid as a temporary measure, instead of creating proper pID's for each employee). 
+
+DELETE FROM patient WHERE pID NOT LIKE 'PT%';
+
+
+-- 3 : Due to a flooding in the hospital, all patients living in Montreal must be moved to a  hospital in Montreal in order to reduce the workload and the traffic in the hospital. Therefore, we must discharge all stays that correspond to our criteria. 
+
+UPDATE stays SET out_date = current date WHERE stays.pID IN (SELECT patient.pID FROM patient WHERE UCASE(city) = 'MONTREAL') AND out_date IS NULL;
+
+
+-- 4 : The hospital is under pressure from the government to improve the quality of its care. Therefore, all of the doctors with a mortality rate higher than 0.2 will be fired from the hospital.
+
+
+
+UPDATE Doctors SET Doctors.annual_salary = Doctors.annual_salary- 100.00 WHERE Doctors.mortality_rate >  0.3000;
+
+
+
+#7 #############################################################################################################
+
+--Part 7 
+
+-- 1 : A view that lists all departments that have a chief doctor and some information about the doctor who is the chief of the department.
+
+
+CREATE VIEW chief_doctors AS SELECT Departments.did, doctor_info.eid, doctor_info.sName, doctor_info.sLast FROM Departments, table (SELECT Doctors.eid, staff.sName, staff.sLast FROM Doctors, Staff WHERE Doctors.eid = Staff.eid) AS doctor_info WHERE doctor_info.eid = Departments.chief_doctor;
+
+
+
+-- 2 : A view that lists all patients's names and pID if they are currently staying at the hospital.
+
+CREATE VIEW current_patient AS SELECT patient.pID, patient.pName, patient.pLast FROM patient, stays WHERE stays.out_date IS NULL AND stays.pID = patient.pID;
+
+
+
+
+-- 1 : Query on view chief_doctors, returns a list of chief doctors in the hospital and the number of patients they have watched over/are watching over. 
+
+SELECT chief_doctors.eid, chief_doctors.sName, chief_doctors.sLast, count(*) FROM chief_doctors, cared_for WHERE chief_doctors.eid = cared_for.eid GROUP BY chief_doctors.eid, chief_doctors.sName, chief_doctors.sLast;
+
+EID        SNAME                SLAST                4          
+---------- -------------------- -------------------- -----------
+DOC2000001 Imad                 Halabi                         1
+DOC2000002 Jabir                Assaf                          2
+DOC2000003 Ibrahim              Atalla                         1
+DOC2000004 Rima                 Bahar                          1
+DOC1000001 Marcos               King                           1
+DOC1000002 Tyrone               Lawson                         1
+DOC1000003 Caleb                Shaw                           1
+DOC1000004 Joanna               Pratt                          2
+
+  8 record(s) selected.
+
+
+
+-- 2 : Query on view current_patient, returns only the past stays of every patient currently staying at the hospital. 
+
+SELECT current_patient.pid, current_patient.pName, current_patient.pLast, stays.sid, stays.in_date, stays.out_date FROM stays, current_patient WHERE stays.pid = current_patient.pid AND stays.out_date IS NOT NULL
+
+PID        PNAME                PLAST                SID        IN_DATE    OUT_DATE  
+---------- -------------------- -------------------- ---------- ---------- ----------
+PT30000002 Janice               Franco               STAY300001 06/21/2013 07/04/2013
+PT30000002 Janice               Franco               STAY300002 09/02/2014 09/20/2014
+PT20000001 Mohammed             Abou-Saba            STAY300010 02/23/2010 02/25/2010
+PT20000001 Mohammed             Abou-Saba            STAY300011 02/23/2011 02/25/2011
+PT20000001 Mohammed             Abou-Saba            STAY300012 02/23/2012 02/25/2012
+PT20000001 Mohammed             Abou-Saba            STAY300013 02/23/2013 02/25/2013
+PT20000001 Mohammed             Abou-Saba            STAY300014 02/23/2014 02/25/2014
+
+  7 record(s) selected.
+
+
+
+#8 ##########################################################################################################
+
+
+db2 => INSERT INTO Stays VALUES ('STAY200011','2015-02-23', '2015-02-20', 'trouble breathing, left arm pain','cardio stenosis','PT20000001')
+
+DB21034E  The command was processed as an SQL statement because it was not a 
+valid Command Line Processor command.  During SQL processing it returned:
+SQL0545N  The requested operation is not allowed because a row does not 
+satisfy the check constraint "BHE8.STAYS.IN_OUT".  SQLSTATE=23513
+
+
+
+
+db2 => INSERT INTO Patient VALUES ('PT20000011','2222208093','Mohammed','Abou-Saba','2119', 'montreal', 'H1A1A1', 'canada', 32, 'M','5142399127','5142117880','Z+')
+
+DB21034E  The command was processed as an SQL statement because it was not a 
+valid Command Line Processor command.  During SQL processing it returned:
+SQL0545N  The requested operation is not allowed because a row does not 
+satisfy the check constraint "BHE8.PATIENT.B_TYPE".  SQLSTATE=23513
+
+
+
+
+db2 => INSERT INTO Cared_for VALUES ('DOC2000004','STAY200004','whaat')
+
+DB21034E  The command was processed as an SQL statement because it was not a 
+valid Command Line Processor command.  During SQL processing it returned:
+SQL0545N  The requested operation is not allowed because a row does not 
+satisfy the check constraint "BHE8.CARED_FOR.TYP_P_NP".  SQLSTATE=23513
+
+

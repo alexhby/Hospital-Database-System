@@ -1,0 +1,552 @@
+
+
+Please notice that the 7 Options in the java application include:
+
+- Option 1,2,3,5,6 queries & modifications for Part 3.
+- Option 4 stored procedure for Part 2.
+- Option 7 indexes & time measurement
+
+
+############################ Part 1: Trigger ###############################
+
+Before UPDATE sID to Beds table, reject UPDATE if either:
+1. the sID does not exist,
+2. this sID has been assigned to another bed (If if the bed of a patient changes, we require that sID of his old bed being set to NULL first.),
+3. the bed is occupied,
+4. not yet cleaned in time.
+
+(Since the trigger includes compound SQL statement, for the creation of this tringger, we set termination character to @.)
+
+
+
+CREATE TRIGGER updateBed
+BEFORE UPDATE OF sID ON Beds
+REFERENCING OLD AS o NEW AS n
+FOR EACH ROW
+BEGIN ATOMIC
+  DECLARE old_outdate DATE;
+  IF n.sID IS NULL OR n.sID NOT IN (SELECT sID FROM Stays) THEN
+    SIGNAL SQLSTATE '75000' ('This sID does not exiDB20000I  The SQL command completed successfully.
+st.');
+  END IF;
+  IF n.sID IN (SELECT sID FROM Beds) THEN
+    SIGNAL SQLSTATE '75000' ('This sID has been assigned to another bed.');
+  END IF;
+  IF o.last_cleaned IS NULL THEN
+    SIGNAL SQLSTATE '75000' ('The bed must be cleaned before assigned to a stay');
+  END IF;
+  IF o.sID IS NOT NULL THEN
+    SET old_outdate = (SELECT out_date FROM Stays WHERE sID = o.sID);
+    IF (old_outdate IS NULL OR old_outdate > CURRENT DATE) THEN
+      SIGNAL SQLSTATE '75000' ('The bed is currently occupied by another patient');
+    ELSEIF o.last_cleaned < old_outdate THEN
+      SIGNAL SQLSTATE '75000' ('The bed must be cleaned before assigned to a stay');
+    END IF;
+  END IF;
+END@
+
+
+
+
+
+Script:
+
+######## Table Beds before modification ########
+
+db2 => select * from beds
+
+BEDID      ROOM_NUMBER LAST_CLEANED SID        EID       
+---------- ----------- ------------ ---------- ----------
+BED2000001         840 03/01/2015   STAY200001 ORD2000003
+BED2000002         712 03/01/2015   -          ORD2000003
+BED2000003          12 03/01/2015   -          ORD2000004
+BED2000004         122 03/01/2015   -          ORD2000003
+BED2000005         500 03/01/2015   -          ORD2000004
+BED2000006         713 03/01/2015   -          ORD2000003
+BED2000007          13 03/01/2015   -          ORD2000004
+BED2000008         123 03/01/2015   STAY300003 ORD2000003
+BED2000009         501 03/01/2015   STAY300004 ORD2000004
+
+
+
+############ Modification 1 : Failed ############
+
+UPDATE Beds
+SET sID = 'STAY300007'
+WHERE bedID = 'BED2000001';
+
+
+-> Error message:
+
+DB21034E  The command was processed as an SQL statement because it was not a 
+valid Command Line Processor command.  During SQL processing it returned:
+SQL0438N  Application raised error with diagnostic text: "The bed is currently 
+occupied by another patient".  SQLSTATE=75000
+
+
+This Modification failed, because the sID of the required bed is NOT NULL and out_date of the current stay is NULL, so the bed is still occupied.
+
+
+############ Modification 2: succeeded ############
+
+UPDATE Beds
+SET sID = 'STAY200006'
+WHERE bedID = 'BED2000002';
+
+
+Result:
+DB20000I  The SQL command completed successfully.
+
+
+This Modification succeeded, because the sID of the required bed is NULL and last_cleaned is NOT NULL, the given sID has not been assigned to another bed.
+
+
+######### Table Beds after modification 2 ##########
+
+db2 => select * from beds
+
+BEDID      ROOM_NUMBER LAST_CLEANED SID        EID       
+---------- ----------- ------------ ---------- ----------
+BED2000001         840 03/01/2015   STAY200001 ORD2000003
+BED2000002         712 03/01/2015   STAY200006 ORD2000003
+BED2000003          12 03/01/2015   -          ORD2000004
+BED2000004         122 03/01/2015   -          ORD2000003
+BED2000005         500 03/01/2015   -          ORD2000004
+BED2000006         713 03/01/2015   -          ORD2000003
+BED2000007          13 03/01/2015   -          ORD2000004
+BED2000008         123 03/01/2015   STAY300003 ORD2000003
+BED2000009         501 03/01/2015   STAY300004 ORD2000004
+
+  9 record(s) selected.
+
+
+
+
+
+######################### Part 2: stored procedure ##########################
+
+################################ Option 4 ###################################
+
+-> IN COMMAND PROMPT:
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate below a certain number
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Quit
+4
+Please enter the mortality rate below which all Doctors will get a 10% raise, as a decimal:
+-0.1
+Sorry, but the mortality rate must be positive!
+Please enter the mortality rate below which all Doctors will get a 10% raise, as a decimal:
+0.25
+Doctor with employee ID 'DOC2000001' got a 10% raise
+Doctor with employee ID 'DOC2000002' got a 10% raise
+Doctor with employee ID 'DOC2000004' got a 10% raise
+Doctor with employee ID 'DOC2000005' got a 10% raise
+Doctor with employee ID 'DOC1000001' got a 10% raise
+Doctor with employee ID 'DOC1000004' got a 10% raise
+
+
+-> IN SQL:
+
+BEFORE RAISE:
+
+db2 => select * from doctors
+
+EID        LEVEL                NUMBER_OF_PATIENT_VISITS MORTALITY_RATE ANNUAL_SALARY      AREA_OF_RESEARCH                                                                 IN_DEPARTMENT SINCE     
+---------- -------------------- ------------------------ -------------- ------------------ -------------------------------------------------------------------------------- ------------- ----------
+DOC2000001 R3                                        233         0.1458          126666.60 Urology                                                                          DEP01         2012-02-08
+DOC2000002 Medical student                             2         0.0000               0.00 cariovasular diseases                                                            DEP02         2014-01-05
+DOC2000003 R5                                        824         0.4200          160210.13 artificial hips                                                                  DEP03         2010-11-25
+DOC2000004 Permanent                                2702         0.2300          574750.36 neurological implants                                                            DEP04         1990-10-02
+DOC2000005 R1                                        120         0.0300           62359.78 Therapy success in psychologique diseases                                        DEP05         2013-03-20
+DOC1000001 Permanent                                2200         0.2458          574750.36 Critical Care                                                                    DEP06         1995-02-25
+DOC1000002 Permanent                                2410         0.2600          586850.36 Gastroenterology                                                                 DEP07         1995-12-12
+DOC1000003 Permanent                                2300         0.3200          511500.33 Oncology                                                                         DEP08         2005-10-07
+DOC1000004 Permanent                                2350         0.2300          550550.36 Nephrology                                                                       DEP09         2009-06-14
+DOC1000005 Permanent                                2100         0.2700          556600.36 Radiotherapy                                                                     DEP10         2012-08-24
+
+  10 record(s) selected.
+
+
+AFTER RAISE:
+
+db2 => select * from doctors
+
+EID        LEVEL                NUMBER_OF_PATIENT_VISITS MORTALITY_RATE ANNUAL_SALARY      AREA_OF_RESEARCH                                                                 IN_DEPARTMENT SINCE     
+---------- -------------------- ------------------------ -------------- ------------------ -------------------------------------------------------------------------------- ------------- ----------
+DOC2000001 R3                                        233         0.1458          139333.26 Urology                                                                          DEP01         2012-02-08
+DOC2000002 Medical student                             2         0.0000               0.00 cariovasular diseases                                                            DEP02         2014-01-05
+DOC2000003 R5                                        824         0.4200          160210.13 artificial hips                                                                  DEP03         2010-11-25
+DOC2000004 Permanent                                2702         0.2300          632225.39 neurological implants                                                            DEP04         1990-10-02
+DOC2000005 R1                                        120         0.0300           68595.75 Therapy success in psychologique diseases                                        DEP05         2013-03-20
+DOC1000001 Permanent                                2200         0.2458          632225.39 Critical Care                                                                    DEP06         1995-02-25
+DOC1000002 Permanent                                2410         0.2600          586850.36 Gastroenterology                                                                 DEP07         1995-12-12
+DOC1000003 Permanent                                2300         0.3200          511500.33 Oncology                                                                         DEP08         2005-10-07
+DOC1000004 Permanent                                2350         0.2300          605605.39 Nephrology                                                                       DEP09         2009-06-14
+DOC1000005 Permanent                                2100         0.2700          556600.36 Radiotherapy                                                                     DEP10         2012-08-24
+
+  10 record(s) selected.
+
+
+
+
+
+################# Part 3: Script of application program ####################
+
+
+################################ Option 1 ###################################
+
+-> AT THE COMMAND PROMPT:
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate lower than 0.2
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Discharge a patient, setting out_date to today's date
+9. Quit
+1
+Which city would you like to search for doctors in ?
+Montreal
+Dr. Imad Halabi is part of our R3 doctors and lives in MONTREAL
+Dr. Ibrahim Atalla is part of our R5 doctors and lives in MONTREAL
+Dr. Nawal Tannous is part of our R1 doctors and lives in MONTREAL
+Dr. Marcos King is part of our Permanent doctors and lives in MONTREAL
+Dr. Caleb Shaw is part of our Permanent doctors and lives in MONTREAL
+Dr. Carol Rose is part of our Permanent doctors and lives in MONTREAL
+
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate lower than 0.2
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Discharge a patient, setting out_date to today's date
+9. Quit
+1  
+Which city would you like to search for doctors in ?
+London
+
+-> IN SQL: for confirmation of these results see the printout of “SELECT * from staff” in option 2 below
+
+
+################################ Option 2 ###################################
+
+-> AT THE COMMAND PROMPT:
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate lower than 0.2
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Discharge a patient, setting out_date to today's date
+9. Quit
+2
+Congratulations you have hired a new employee, please enter all necessary information in the order they are demanded
+eID
+DOC5512345
+this eid already exists please choose an other
+DOC6612345
+is the employee a doctor or nurse ??
+blur  
+the type of employee given does not exist for this command, please input the correct type
+doctor
+level (permanent, R1, R2...)
+permanent
+number_of_patient_visits, integer
+5
+mortality_rate, decimal
+0.7
+Unfortunately we do not hire doctors with higher mortality rates than 0.6 anymore, are you sure you have entered the correct value (yes/no)?
+no
+enter mortality rate again
+0.3
+annual_salary, decimal
+100.0
+area_of_research
+Academics
+in department ?
+01
+the department given does not exist, try again
+DEB27
+the department given does not exist, try again
+DEP01
+since? in the form YYYY-MM-DD
+0001-01-01
+Name
+Shahab
+Last Name
+Razavi
+medicare number
+2222287075
+this medicarenumber already exists please choose an other
+1234500000
+date of birth in the form YYYY-MM-DD
+1990-11-11
+gender (M/F)
+M
+civicNumber
+8900
+city
+Laval
+postalCode
+H1H1H1
+country
+Canada
+phone_number
+514514514
+date_of_employement in form YYYY-MM-DD
+2015-03-26
+biweekly_hours, integer
+40
+
+—> IN SQL:
+
+db2 => select *from staff
+
+EID        SNAME                SLAST                MEDICARE_NUMBER DATE_OF_BIRTH GENDER CIVICNUMBER CITY                           POSTALCODE COUNTRY                        PHONE_NUMBER DATE_OF_EMPLOYEMENT BIWEEKLY_HOURS
+---------- -------------------- -------------------- --------------- ------------- ------ ----------- ------------------------------ ---------- ------------------------------ ------------ ------------------- --------------
+DOC2000001 Imad                 Halabi               2222287075      1979-02-11    M      1610        Montreal                       E7O9X3     Canada                         5142474688   2012-02-01                      84
+DOC2000002 Jabir                Assaf                2222297145      1978-02-19    M      1594        Laval                          T3M2E6     Canada                         5142494932   2014-01-01                      75
+DOC2000003 Ibrahim              Atalla               2222203491      1962-06-25    M      1967        Montreal                       S0F1F9     Canada                         5142465313   2010-11-01                      76
+DOC2000004 Rima                 Bahar                2222258500      1960-03-06    F      1993        Brossard                       E0U3U7     Canada                         5142477081   1990-10-01                      79
+DOC2000005 Nawal                Tannous              2222284414      1977-05-05    F      770         Montreal                       J1U8B0     Canada                         5142463763   2013-03-01                      30
+NUR2000001 Gebran               Zoghby               2222284733      1957-04-25    M      195         Brossard                       E6L6F1     Canada                         5142464753   2010-02-01                      82
+NUR2000002 Karim                Kannaan              2222234726      1957-07-26    M      419         Montreal                       X1U3F4     Canada                         5142424868   2014-06-01                      95
+NUR2000003 Nada                 Bishara              2222214255      1961-02-07    F      1171        Montreal                       Y9Q7E4     Canada                         5142428656   1998-02-01                      45
+NUR2000004 Hanan                Toma                 2222277081      1963-04-06    F      1574        Montreal                       V7P6W3     Canada                         5142414780   2005-05-01                      76
+NUR2000005 Shophia              Asad                 2222262044      1974-05-24    F      135         Laval                          X7C6L5     Canada                         5142493385   2000-03-01                      38
+ORD2000001 Rafiq                Deeb                 2222273969      1960-05-31    M      189         Laval                          R8L1P6     Canada                         5142446755   2000-01-01                      22
+ORD2000002 Shakir               Khoury               2222261645      1979-06-26    M      960         Laval                          N2R2S3     Canada                         5142424688   2013-01-01                      45
+ORD2000003 Fouad                kassis               2222297573      1957-12-03    M      119         Brossard                       V8U9N1     Canada                         5142481418   2008-01-01                      95
+ORD2000004 Anas                 Naser                2222211456      1966-10-10    M      620         Montreal                       H4J4K5     Canada                         5142428592   2012-01-01                      34
+ORD2000005 Bernadette           Sayeh                2222230676      1972-06-23    F      443         Laval                          Y0D9F3     Canada                         5142484679   2003-01-01                      10
+DOC1000001 Marcos               King                 1111174265      1965-01-20    M      2801        Montreal                       H1B2C3     Canada                         5145756130   1995-02-25                      83
+DOC1000002 Tyrone               Lawson               1111116206      1966-03-20    M      779         Laval                          H7C4D5     Canada                         5141913842   1995-12-12                      76
+DOC1000003 Caleb                Shaw                 1111136119      1967-08-18    M      2220        Montreal                       H1E6F7     Canada                         5143026337   2005-10-07                      75
+DOC1000004 Joanna               Pratt                1111178381      1979-11-13    F      2595        Brossard                       H5A8G9     Canada                         5147253891   2009-06-14                      80
+DOC1000005 Carol                Rose                 1111174584      1984-05-16    F      2156        Montreal                       H1H1I2     Canada                         5148828942   2012-08-24                      31
+DOC1000006 Geneva               Munoz                1111123456      1985-12-13    F      111         Brossard                       H3A2C3     Canada                         5147253891   2008-07-14                      79
+DOC1000007 Elaine               Murray               1111134567      1986-05-10    F      22          Montreal                       H1H4I5     Canada                         5148828942   2007-08-24                      33
+DOC1000008 Candace              Flowers              1111145678      1985-01-15    F      4           Brossard                       H3A8T7     Canada                         5147253891   2009-07-14                      85
+DOC1000009 Carrie               Simon                1111156789      1986-06-16    F      15          Montreal                       H1R1W5     Canada                         5148828942   2013-08-24                      32
+NUR1000001 Roman                Francis              1111154483      1903-08-16    M      1951        Brossard                       H5J6K7     Canada                         5148506237   2000-01-01                      81
+NUR1000002 Rolando              Love                 1111137463      1974-03-17    M      2595        Montreal                       H1L9M1     Canada                         5141902977   2001-10-14                      96
+NUR1000003 Candice              Mendoza              1111113435      1976-04-29    F      2990        Montreal                       H1N2O3     Canada                         5147564920   2005-12-17                      44
+NUR1000004 Pauline              Cruz                 1111185127      1939-08-08    F      264         Montreal                       H1P4S5     Canada                         5144319935   2006-09-15                      77
+NUR1000005 Katie                Munoz                1111126389      1982-10-08    F      2748        Laval                          H7T8U9     Canada                         5144955438   2006-10-29                      37
+ADM3000001 Katie                Munoz                3333326319      1982-10-08    F      2748        Laval                          H7T8U9     Canada                         5144955438   2006-10-29                      37
+CUS3000001 Katie                Munoz                3333326329      1982-10-08    F      2748        Laval                          H7T8U9     Canada                         5144955438   2006-10-29                      37
+doc2000008 georges              lol                  2222277082      1991-01-01    F      25          montreal                       H1T2R4     canada                         5146772342   1991-01-02                      25
+DOC2000009 A                    BB                   2222211019      1991-01-01    M      38          montreal                       h1t272     canada                         5146119222   1991-01-01                      30
+DOC5512345 Rida                 Abou-Haidar          1234567890      1990-01-01    F      4848        Montreal                       J4J4J4     Canada                         514514514    2015-03-26                      40
+DOC6612345 Shahab               Razavi               1234500000      1990-11-11    M      8900        Laval                          H1H1H1     Canada                         514514514    2015-03-26                      40
+
+
+################################ Option 3 ###################################
+
+-> IN COMMAND PROMPT:
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate lower than 0.2
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Discharge a patient, setting out_date to today's date
+9. Quit
+3
+Please enter the Patient id or type "NAME" to search by first or last name
+PT20000010
+The ID you have entered is not valid, you can find a Patient ID by typing "NAME" when asked for the ID
+Please enter the Patient id or type "NAME" to search by first or last name
+NAME
+Enter first name OR last name of the patient
+Moma
+
+          First name           Last name             ID
+
+Please enter the Patient id or type "NAME" to search by first or last name
+NAME
+Enter first name OR last name of the patient
+Mohammed
+
+          First name           Last name             ID
+
+            Mohammed           Abou-Saba     PT20000001
+Please enter the Patient id or type "NAME" to search by first or last name
+PT20000001
+
+         Employee ID          First name           Last name
+
+          NUR2000003                Nada             Bishara
+          DOC2000001                Imad              Halabi
+
+
+-> IN SQL: 
+
+
+db2 => select * from patient
+
+PID        MEDICARE_NUMBER PNAME                PLAST                CIVICNUMBER CITY                           POSTALCODE COUNTRY                        AGE         GENDER PHONE_NUMBER EMERGENCY_CONTACT BLOOD_TYPE
+---------- --------------- -------------------- -------------------- ----------- ------------------------------ ---------- ------------------------------ ----------- ------ ------------ ----------------- ----------
+PT20000001 2222208092      Mohammed             Abou-Saba            2119        montreal                       H1A1A1     canada                                  32 M      5142399127   5142117880        AB+       
+PT20000002 2222212345      Mahmoud              El-Hareb             22          beyrout                        11112222   Lebanon                                 25 M      5142152432   5142323467        B+        
+PT20000003 2222204637      Fatima               Baroud               1123        montreal                       H2B2B2     canada                                  18 F      5142874014   5142731202        A-        
+PT20000004 2222205647      Tanious              Bin-Mahmood          4453        laval                          H7A1A1     canada                                  78 M      5142212927   5142598509        O+        
+PT20000005 2222245632      Khadija              Lafleur              665         Montreal                       H1C1C1     canada                                  39 F      5142303302   5142697140        O-        
+PT30000001 3333301010      Alex                 Simons               3132        brossard                       H1A1A9     canada                                  44 M      5143321543   5143121123        AB-       
+PT30000002 3333300202      Janice               Franco               3245        montreal                       H1A1A6     canada                                  36 F      5143332242   5143024123        A+        
+
+  7 record(s) selected.
+
+
+
+################################ Option 5 ###################################
+
+-> IN COMMAND PROMPT:
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate lower than 0.2
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Discharge a patient, setting out_date to today's date
+9. Quit
+5
+Please enter the Patient id or type "medicare" to search by medicare number
+PT20000010
+Error: paitent with the given pid does not exist. Please try again.
+Please enter the Patient id or type "medicare" to search by medicare number
+PT20000001
+Please enter the new contact information in the order they are demanded.
+civicNumber
+4141
+city
+Montreal
+postalCode
+J4J4J4
+country
+Canada
+phone_number
+514555112 
+emergency_contact
+514010000
+Update finished.
+
+
+-> IN SQL:
+
+BEFORE CONTACT INFO CHANGE:
+
+db2 => select * from patient
+
+PID        MEDICARE_NUMBER PNAME                PLAST                CIVICNUMBER CITY                           POSTALCODE COUNTRY                        AGE         GENDER PHONE_NUMBER EMERGENCY_CONTACT BLOOD_TYPE
+---------- --------------- -------------------- -------------------- ----------- ------------------------------ ---------- ------------------------------ ----------- ------ ------------ ----------------- ----------
+PT20000001 2222208092      Mohammed             Abou-Saba            2119        montreal                       H1A1A1     canada                                  32 M      5142399127   5142117880        AB+       
+PT20000002 2222212345      Mahmoud              El-Hareb             22          beyrout                        11112222   Lebanon                                 25 M      5142152432   5142323467        B+        
+PT20000003 2222204637      Fatima               Baroud               1123        montreal                       H2B2B2     canada                                  18 F      5142874014   5142731202        A-        
+PT20000004 2222205647      Tanious              Bin-Mahmood          4453        laval                          H7A1A1     canada                                  78 M      5142212927   5142598509        O+        
+PT20000005 2222245632      Khadija              Lafleur              665         Montreal                       H1C1C1     canada                                  39 F      5142303302   5142697140        O-        
+PT30000001 3333301010      Alex                 Simons               3132        brossard                       H1A1A9     canada                                  44 M      5143321543   5143121123        AB-       
+PT30000002 3333300202      Janice               Franco               3245        montreal                       H1A1A6     canada                                  36 F      5143332242   5143024123        A+        
+
+  7 record(s) selected.
+
+
+AFTER CONTACT INFO CHANGE:
+
+db2 => select * from patient        
+
+PID        MEDICARE_NUMBER PNAME                PLAST                CIVICNUMBER CITY                           POSTALCODE COUNTRY                        AGE         GENDER PHONE_NUMBER EMERGENCY_CONTACT BLOOD_TYPE
+---------- --------------- -------------------- -------------------- ----------- ------------------------------ ---------- ------------------------------ ----------- ------ ------------ ----------------- ----------
+PT20000001 2222208092      Mohammed             Abou-Saba            4141        Montreal                       J4J4J4     Canada                                  32 M      514555112    514010000         AB+       
+PT20000002 2222212345      Mahmoud              El-Hareb             22          beyrout                        11112222   Lebanon                                 25 M      5142152432   5142323467        B+        
+PT20000003 2222204637      Fatima               Baroud               1123        montreal                       H2B2B2     canada                                  18 F      5142874014   5142731202        A-        
+PT20000004 2222205647      Tanious              Bin-Mahmood          4453        laval                          H7A1A1     canada                                  78 M      5142212927   5142598509        O+        
+PT20000005 2222245632      Khadija              Lafleur              665         Montreal                       H1C1C1     canada                                  39 F      5142303302   5142697140        O-        
+PT30000001 3333301010      Alex                 Simons               3132        brossard                       H1A1A9     canada                                  44 M      5143321543   5143121123        AB-       
+PT30000002 3333300202      Janice               Franco               3245        montreal                       H1A1A6     canada                                  36 F      5143332242   5143024123        A+        
+
+  7 record(s) selected.
+
+
+################################ Option 6 ###################################
+
+
+-> IN SQL:
+
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate lower than 0.2
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Discharge a patient, setting out_date to today's date
+9. Quit
+6
+Please enter a date in the form YYYY-MM-DD
+0001-01-01
+
+          Patient ID          First name           Last name           Total Due
+
+          PT20000001            Mohammed           Abou-Saba            5.000000
+          PT20000002             Mahmoud            El-Hareb            0.035000
+          PT20000003              Fatima              Baroud           27.500000
+          PT20000004             Tanious         Bin-Mahmood            3.960000
+
+
+
+
+############################# Part 4: index #################################
+
+################################ Option 7 ###################################
+
+-> IN COMMAND PROMPT:
+
+Please choose one of the following options to continue: 
+1. Find all doctors in a specific city
+2. Add an employee to the hospital database
+3. Find all employees who have been in contact with a specific patient
+4. Give a 10% bonus to all docotrs with mortality rate lower than 0.2
+5. Update the contact information of a patient
+6. Compute total medication cost per patient since a given date
+7. Timer on Query: SELECT pName, pLast, phone_number FROM patient WHERE patient.pID NOT IN (SELECT pID FROM Stays WHERE out_date IS NULL) AND UCASE(patient.city) = 'LAVAL' AND patient.blood_type LIKE 'O_'
+8. Discharge a patient, setting out_date to today's date
+9. Quit
+7
+time required by the query WITHOUT the index: 191
+time required by the query WITH the index: 156
+
+
+
+
+Here, the first index that we’ve created is in the table patient, on the attributes city and blood type. The reasoning behind the addition of this index is a query that will need to be run extremely fast in our database, searching for blood donors in the vicinity of the hospital in case the hospital runs out of a certain blood type in an emergency. The patient list of the hospital can become extensively long, and searching in will take proportionally more time. 
+
+
+
+The second index is created in the table Doctors, on the mortality rate of doctors. This is important for a hospital that will frequently check that its doctors keep a low mortality rate. A hospital that keeps an eye on this data needs to have a quick access to it, it might need to search all mortality rates between A and B values, it might also want to reward doctors with low mortality rate (as shown in #3 option 4). 
+
